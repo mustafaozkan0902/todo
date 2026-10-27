@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ŞantiyeNot">
+  <meta name="theme-color" content="#0b0f17">
+  <title>Şantiye Yapılacaklar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- Masaüstü Önizleme Çubuğu (Mobilde görünmez) -->
+  <div class="desktop-toolbar">
+    <span class="badge-device"><i data-lucide="smartphone"></i> iPhone 16 Kompakt Liste Görünümü</span>
+    <button class="toolbar-btn" id="toggle-frame-btn">
+      <i data-lucide="maximize-2"></i>
+      <span>Tam Ekran / Telefon Çerçevesi</span>
+    </button>
+  </div>
+
+  <div class="iphone-wrapper" id="iphone-wrapper">
+    <div class="iphone-frame">
+      <!-- Dynamic Island -->
+      <div class="dynamic-island"></div>
+
+      <div class="app-screen">
+        <!-- Ultra Kompakt Üst Bar -->
+        <header class="compact-header">
+          <div class="header-row">
+            <div class="title-area">
+              <span class="app-title">Şantiye İş Listesi</span>
+              <span class="date-badge" id="current-date-text">28 Eki</span>
+            </div>
+
+            <div class="header-right">
+              <span class="counter-pill" id="stat-counter" title="Bekleyen / Toplam">0/0</span>
+              <button class="mini-icon-btn" id="export-whatsapp-btn" title="WhatsApp İçin Kopyala">
+                <i data-lucide="share-2"></i>
+              </button>
+              <button class="mini-icon-btn" id="clear-done-btn" title="Tamamlananları Temizle">
+                <i data-lucide="check-check"></i>
+              </button>
+              <button class="mini-icon-btn" id="theme-toggle-btn" title="Açık / Koyu Tema">
+                <i data-lucide="sun" class="sun-icon"></i>
+                <i data-lucide="moon" class="moon-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tek Satır Kompakt Filtre -->
+          <div class="compact-filters" id="filter-bar">
+            <button class="f-chip active" data-filter="all">Tümü</button>
+            <button class="f-chip" data-filter="pending">Bekleyen</button>
+            <button class="f-chip urgent-chip" data-filter="urgent">Acil</button>
+            <button class="f-chip" data-filter="done">Biten</button>
+            <span class="f-divider"></span>
+            <select id="cat-filter-select" class="compact-select" aria-label="Kategori Filtresi">
+              <option value="all">Tüm Konular</option>
+              <option value="İmalat">İmalat</option>
+              <option value="Malzeme">Malzeme</option>
+              <option value="Taşeron">Taşeron</option>
+              <option value="İSG">İSG</option>
+              <option value="Kontrol">Kontrol</option>
+              <option value="Ofis">Ofis</option>
+            </select>
+          </div>
+        </header>
+
+        <!-- Alt Alta Sıralı Kompakt Görev Listesi (Ekrana 12-15+ satır sığar) -->
+        <main class="compact-list" id="task-feed">
+          <!-- Görev satırları JS ile buraya gelir -->
+        </main>
+
+        <!-- Tek Satır Hızlı Ekleme Çubuğu (Alt Bar) -->
+        <footer class="compact-dock">
+          <form class="dock-form" id="quick-add-form">
+            <!-- Acil Seçici -->
+            <button type="button" class="dock-urgent-btn" id="quick-urgent-btn" title="Acil İş">!</button>
+
+            <!-- Hızlı İş Yazma Inputu -->
+            <div class="dock-input-wrap">
+              <input 
+                type="text" 
+                id="quick-task-input" 
+                placeholder="Yapılacak işi yaz..." 
+                autocomplete="off"
+                enterkeyhint="send"
+              >
+              <button type="button" class="dock-mic-btn" id="voice-dictate-btn" title="Sesle Yaz">
+                <i data-lucide="mic"></i>
+              </button>
+            </div>
+
+            <!-- Sağda Kompakt Mahal/Etiket Seçici -->
+            <select id="quick-tag-select" class="dock-tag-select" title="Mahal / Konu Seç">
+              <option value="">Etiket</option>
+              <optgroup label="Mahal / Blok">
+                <option value="A Blok">A Blok</option>
+                <option value="B Blok">B Blok</option>
+                <option value="Bodrum">Bodrum</option>
+                <option value="Çatı">Çatı</option>
+                <option value="Saha">Saha</option>
+              </optgroup>
+              <optgroup label="Konu">
+                <option value="İmalat">İmalat</option>
+                <option value="Malzeme">Malzeme</option>
+                <option value="Taşeron">Taşeron</option>
+                <option value="İSG">İSG</option>
+                <option value="Kontrol">Kontrol</option>
+                <option value="Ofis">Ofis</option>
+              </optgroup>
+            </select>
+
+            <!-- Ekle Butonu -->
+            <button type="submit" class="dock-send-btn" aria-label="Ekle">
+              <i data-lucide="plus"></i>
+            </button>
+          </form>
+          <div class="home-indicator"></div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Satıra Tıklayınca Açılan Hızlı Düzenleme / Detay Penceresi -->
+  <div class="sheet-overlay" id="edit-sheet-overlay">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>İşi Düzenle</h3>
+        <button type="button" class="mini-icon-btn" id="close-sheet-btn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <form id="edit-task-form">
+        <input type="hidden" id="edit-task-id">
+        <div class="sheet-field">
+          <label>Yapılacak İş</label>
+          <input type="text" id="edit-task-title" required>
+        </div>
+        <div class="sheet-row">
+          <div class="sheet-field">
+            <label>Mahal / Blok (Sağda görünür)</label>
+            <input type="text" id="edit-task-loc" placeholder="Örn: A Blok, 3.Kat">
+          </div>
+          <div class="sheet-field">
+            <label>Konu Etiketi</label>
+            <select id="edit-task-cat">
+              <option value="">Yok</option>
+              <option value="İmalat">İmalat</option>
+              <option value="Malzeme">Malzeme</option>
+              <option value="Taşeron">Taşeron</option>
+              <option value="İSG">İSG</option>
+              <option value="Kontrol">Kontrol</option>
+              <option value="Ofis">Ofis</option>
+            </select>
+          </div>
+        </div>
+        <div class="sheet-field">
+          <label>Kısa Not (İsteğe bağlı)</label>
+          <input type="text" id="edit-task-note" placeholder="Örn: Mehmet usta, 45m3 C30...">
+        </div>
+        <div class="sheet-field">
+          <label class="urgent-switch">
+            <input type="checkbox" id="edit-task-urgent">
+            <span>🚨 Acil İş (Kırmızı vurgu)</span>
+          </label>
+        </div>
+        <div class="sheet-actions">
+          <button type="button" class="btn-delete" id="delete-task-btn">Sil</button>
+          <button type="submit" class="btn-save">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-banner" id="toast-banner">
+    <span id="toast-text">Kaydedildi</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
