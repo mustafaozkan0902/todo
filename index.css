@@ -146,20 +146,36 @@ html, body {
 .iphone-wrapper.fullscreen-mode .dynamic-island { display: none; }
 .iphone-wrapper.fullscreen-mode .compact-header { padding-top: 10px; }
 
-/* Gerçek iPhone / Mobil Cihazda Tam Ekran */
+/* Gerçek iPhone / Mobil Cihazda Kenarlardan Rahat Boşluklu Ergonomik Görünüm */
 @media (max-width: 600px) {
   .desktop-toolbar { display: none !important; }
-  .iphone-wrapper { height: 100dvh; padding: 0; }
-  .iphone-frame {
-    width: 100vw;
+  .iphone-wrapper {
     height: 100dvh;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
+    padding: calc(10px + var(--safe-top)) 12px calc(12px + var(--safe-bottom)) 12px;
+    background: var(--bg-outer);
+  }
+  .iphone-frame {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: 22px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
   }
   .dynamic-island { display: none; }
-  .compact-header { padding-top: max(10px, var(--safe-top)) !important; }
-  .compact-dock { padding-bottom: max(6px, var(--safe-bottom)) !important; }
+  .compact-header {
+    padding: 14px 16px 10px 16px !important;
+  }
+  .compact-list {
+    padding: 4px 6px;
+  }
+  .task-row {
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+  }
+  .compact-dock {
+    padding: 10px 14px 12px 14px !important;
+  }
   .home-indicator { display: none; }
 }
 
